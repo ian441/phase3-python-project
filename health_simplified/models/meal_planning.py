@@ -1,8 +1,8 @@
 # meal_planning.by
 import typer
-for models import Session, User, MealPlan
+from models import Session, User, MealPlan
 
-app =typer.Typer()
+app = typer.Typer()  # Add spaces for readability
 
 @app.command()
 def plan_meal(user: str, week: int):

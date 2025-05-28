@@ -17,23 +17,21 @@ def set(user: str, daily: int, weekly: int):
         if not goal:
             goal = NutritionGoal(user_id=user_obj.id)
             session.add(goal)
-            
             goal.daily_calories = daily
             goal.weekly_calories = weekly
             session.commit()
             typer.echo(f"Set goals for {user}: Daily={daily} cal, Weekly={weekly} cal")
-        except Exception as e:
+    except Exception as e:
         session.rollback()
         typer.echo(f"Error setting goals: {str(e)}", err=True)
     finally:
         session.close()
-        
-        
-    @app.command()
-    def list(user: str):
-        """List nutrition goals for a user"""
-        session = Session()
-        try:
+
+@app.command()
+def list(user: str):
+    """List nutrition goals for a user"""
+    session = Session()
+    try:
             user_obj = session.query(User).filter_by(name=user).first()
             if not user_obj:
                 typer.echo(f"User '{user}' not found!", err=True)
@@ -47,6 +45,6 @@ def set(user: str, daily: int, weekly: int):
                 
             else:
                 typer.echo(f"No goals set for {user}")
-        finally:
-            session.close()
+    finally:
+    session.close()
             

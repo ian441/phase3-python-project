@@ -1,6 +1,6 @@
 # user.py
 import typer
-from models import Session, user
+from models import Session, User
 from typing import Optional
 
 app = typer.Typer()
@@ -10,8 +10,8 @@ def create(name:str):
     """New user"""
     session = Session()
     try:
-        user = user(name=name)
-        session.add(user)
+        new_user = User(name=name)
+        session.add(new_user)
         session.commit()
         typer.echo(f"User '{name}' created successfully!")
     except Exception as e:
@@ -20,12 +20,12 @@ def create(name:str):
     finally:
         session.close()
         
-    @app.command
-    def list():
-        """List all users"""
-        session = Session()
+@app.command
+def list():
+    """List all users"""
+    session = Session()
     try:
-        users = session.query(user).all()
+        users = session.query(User).all()
         if not users:
             typer.echo("No users found")
             return
