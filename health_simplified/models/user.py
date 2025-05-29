@@ -1,36 +1,18 @@
-# user.py
-import typer
-from models import Session, User
-from typing import Optional
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from .base import Base
 
-app = typer.Typer()
+class User(Base):
+    """User model representing application users"""
+    __tablename__ = "users"
 
-@app.command()
-def create(name:str):
-    """New user"""
-    session = Session()
-    try:
-        new_user = User(name=name)
-        session.add(new_user)
-        session.commit()
-        typer.echo(f"User '{name}' created successfully!")
-    except Exception as e:
-        session.rollback()
-        typer.echo(f"Error creating user: {str(e)}", error=True )
-    finally:
-        session.close()
-        
-@app.command
-def list():
-    """List all users"""
-    session = Session()
-    try:
-        users = session.query(User).all()
-        if not users:
-            typer.echo("No users found")
-            return
-        
-        for user in users:
-            typer.echo(f"{user.id}: {user.name}")
-    finally:   
-    session.close()
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True, nullable=False)
+    
+    # Relationships
+    food_entries = relationship("FoodEntry", back_populates="user", cascade="all, delete-orphan")
+    nutrition_goal = relationship("NutritionGoal", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    meal_plans = relationship("MealPlan", back_populates="user", cascade="all, delete-orphan")
+    
+    def __repr__(self):
+        return f"<User(id={self.id}, name='{self.name}')>"

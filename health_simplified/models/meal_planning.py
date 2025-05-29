@@ -1,29 +1,18 @@
-# meal_planning.by
-import typer
-from models import Session, User, MealPlan
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from .base import Base
 
-app = typer.Typer()  # Add spaces for readability
+class MealPlan(Base):
+    """Meal plan model for weekly meal planning"""
+    __tablename__ = "meal_plans"
 
-@app.command()
-def plan_meal(user: str, week: int):
-    """Create a meal plan for a user"""
-    session = Session()
-    try:
-        user_obj = session.query(User).filter_by(name=user).first()
-        if not user_obj:
-            typer.echo(f"User '{user}' not found!", err=True)
-            return
-        
-        plan = MealPlan(
-            user_id=user_obj.id,
-            week_number=week,
-            plan_details='Sample meal plan details'
-        )
-        session.add(plan)
-        session.commit()
-        typer.echo(f"Created meal plan for {user}, week{week}")
-    except Exception as e:
-        session.rollback()
-        typer.echo(f"Error creating meal plan: {str(e)}", err=True)
-    finally:
-        session.close()
+    id = Column(Integer, primary_key=True, index=True)
+    week_number = Column(Integer, nullable=False)
+    plan_details = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    # Relationship
+    user = relationship("User", back_populates="meal_plans")
+
+    def __repr__(self):
+        return f"<MealPlan(id={self.id}, week={self.week_number}, user_id={self.user_id})>"
