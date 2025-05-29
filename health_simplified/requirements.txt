@@ -1,5 +1,0 @@
-sqlalchemy>=2.0
-click>=8.0
-alembic>=1.0  # for database migrations
-rich>=13.0    # for pretty CLI output
-python-dotenv>=0.19 # for environment variables
