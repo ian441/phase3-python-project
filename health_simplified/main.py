@@ -1,4 +1,4 @@
-from health_simplified.controllers.cli import app
+from health_simplified.controllers.cli import cli
 
 if __name__ == "__main__":
-    app()
+    cli()
