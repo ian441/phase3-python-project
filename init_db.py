@@ -6,8 +6,12 @@ from health_simplified.models.food_entry import FoodEntry
 
 def init():
     engine = get_engine()
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created.")
-
+    confirm = input("This will recreate all tables. Continue? (y/n): ")
+    if confirm.lower() == 'y':
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created.")
+    else:
+        print("Cancelled.")
+        
 if __name__ == "__main__":
     init()
