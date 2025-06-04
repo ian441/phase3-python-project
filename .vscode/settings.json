@@ -1,0 +1,17 @@
+{
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "feat/setup-core-models"
+    ],
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./health_simplified",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "health_simplified"
+    ]
+}

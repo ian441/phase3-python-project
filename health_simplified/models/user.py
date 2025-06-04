@@ -1,18 +1,13 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from .base import Base
+from health_simplified.db.database import Base
 
 class User(Base):
-    """User model representing application users"""
     __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True, nullable=False)
     
-    # Relationships
-    food_entries = relationship("FoodEntry", back_populates="user", cascade="all, delete-orphan")
-    nutrition_goal = relationship("NutritionGoal", back_populates="user", uselist=False, cascade="all, delete-orphan")
-    meal_plans = relationship("MealPlan", back_populates="user", cascade="all, delete-orphan")
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
     
-    def __repr__(self):
-        return f"<User(id={self.id}, name='{self.name}')>"
+    food_entries = relationship("FoodEntry", back_populates="user")
+    goals = relationship("NutritionGoal", back_populates="user") 
+    meal_plans = relationship("MealPlan", back_populates="user")
